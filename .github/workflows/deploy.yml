@@ -1,0 +1,40 @@
+name: deploy
+on:
+  push:
+    branches:
+      - "master"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+      # Init .env file on build machine
+#      - name: Init .env file on build machine
+#        run: |
+#          /usr/bin/printf '${{ secrets.ENV_FILE }}' > .env
+      # Build frontend
+      - name: Build frontend
+        run:  npm run build
+      # Create SSH connection
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2.3.1
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+      # Delete old files from server
+      - name: Delete old files from server
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
+            rm -rf /var/www/
+            mkdir /var/www/piano-teachers.onlin
+          "
+      # Copy files to server
+      - name: Copy files to server
+        run: scp -r ./build/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/
