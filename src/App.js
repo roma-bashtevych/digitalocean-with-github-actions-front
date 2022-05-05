@@ -3,36 +3,35 @@ import './App.css';
 import {useState} from "react";
 
 function App() {
-  const [users, setUsers] = useState([])
-  const [ping, setPing] = useState('')
+    const [users, setUsers] = useState([])
+    const [ping, setPing] = useState('')
     fetch('/api/')
-            .then(value => value.json())
-            .then(value => {
-                setUsers(value)
-            })
-  fetch('/api/ping')
-      .then(value => value.json())
-      .then(value => {
-        setPing('PING')
-      })
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          {
-          users &&  JSON.stringify(users)
-          }
-        </p>
-        <a
-          className="App-link"
-          href="#"
-        >
-          {ping && ping}
-        </a>
-      </header>
-    </div>
-  );
+        .then(value => value.json())
+        .then(value => {
+            setUsers(value)
+        })
+    fetch('/api/ping')
+        .then(value => value.json())
+        .then(value => {
+            setPing('PING')
+        })
+    return (
+        <div className="App">
+            <header className="App-header">
+                <img src={logo} className="App-logo" alt="logo"/>
+                <p>
+                    {
+                        users && JSON.stringify(users)
+                    }
+                </p>
+                <p
+                    className="App-link"
+                >
+                    {ping && ping}
+                </p>
+            </header>
+        </div>
+    );
 }
 
 export default App;
