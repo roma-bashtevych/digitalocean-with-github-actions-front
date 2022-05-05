@@ -26,6 +26,11 @@ function App() {
                 </p>
                 <p
                     className="App-link"
+                    onClick={    fetch('/api/ping')
+                        .then(value => value.json())
+                        .then(value => {
+                            setPing(value)
+                        })}
                 >
                     {ping && ping}
                 </p>
