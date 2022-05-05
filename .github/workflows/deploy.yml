@@ -33,7 +33,7 @@ jobs:
         run: |
           ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
             rm -rf /var/www/
-            mkdir /var/www/piano-teachers.onlin
+            mkdir /var/www/
           "
       # Copy files to server
       - name: Copy files to server
