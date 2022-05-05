@@ -1,20 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 function App() {
     const [users, setUsers] = useState([])
     const [ping, setPing] = useState('')
+useEffect(() => {
     fetch('/api/')
         .then(value => value.json())
         .then(value => {
             setUsers(value)
         })
-    fetch('/api/ping')
-        .then(value => value.json())
-        .then(value => {
-            setPing('PING')
-        })
+}, [])
+
     return (
         <div className="App">
             <header className="App-header">
